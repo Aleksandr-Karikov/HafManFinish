@@ -12,15 +12,15 @@ namespace HafManFinish
         string input;
         int[] ArrayFrequence;
         byte CodeSize = 255;
-     //   private String[] encodingArray;
+        public String[] encodingArray;
         public HuffmanTree(string inp)
         {
             input = inp;
             ArrayFrequence = new int[CodeSize];
             fillArrayFrequence(inp);
             haftree = getHuffmanTree();
-          //  encodingArray = new String[CodeSize];
-          //  fillEncodingArray(haftree.getRoot(), "", "");
+            encodingArray = new String[CodeSize];
+            fillEncodingArray(haftree.getRoot(), "", "");
         }
         void fillArrayFrequence(string message)
         {
@@ -70,27 +70,41 @@ namespace HafManFinish
         {
             return haftree;
         }
-        //public String[] getEncodingArray()
-        //{
-        //    return encodingArray;
-        //}
-        //void fillEncodingArray(Node node, String codeBefore, String direction)
-        //{
-        //    if (node.isLeaf())
-        //    {
-        //        encodingArray[(int)node.getLetter()] = codeBefore + direction;
-        //    }
-        //    else
-        //    {
-        //        fillEncodingArray(node.getLeftChild(), codeBefore + direction, "0");
-        //        fillEncodingArray(node.getRightChild(), codeBefore + direction, "1");
-        //    }
-        //}
+        public String[] getEncodingArray()
+        {
+            return encodingArray;
+        }
+        void fillEncodingArray(Node node, String codeBefore, String direction)
+        {
+            if (node.isLeaf())
+            {
+                encodingArray[(int)node.getLetter()] = codeBefore + direction;
+            }
+            else
+            {
+                fillEncodingArray(node.getLeftChild(), codeBefore + direction, "0");
+                fillEncodingArray(node.getRightChild(), codeBefore + direction, "1");
+            }
+        }
         public String getOriginalString()
         {
             return input;
         }
 
-      
+        public void displayEncodingArray()
+        {//для отладки
+            fillEncodingArray(haftree.getRoot(), "", "");
+
+            Console.WriteLine("======================Encoding table====================");
+            for (int i = 0; i < 255; i++)
+            {
+                if (ArrayFrequence[i] != 0)
+                {
+                    Console.WriteLine((char)i + " ");
+                    Console.WriteLine(encodingArray[i]);
+                }
+            }
+            Console.WriteLine("========================================================");
+        }
     }
 }
