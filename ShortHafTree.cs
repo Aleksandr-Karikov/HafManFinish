@@ -64,7 +64,7 @@ namespace HafManFinish
                         }
                     }
                 }
-                if (Temp.getLeftChild() != null && Temp.getRightChild() != null)
+                while (Temp.getLeftChild() != null && Temp.getRightChild() != null)
                 {
                     Temp = Temp.getParent();
                 }
@@ -89,9 +89,12 @@ namespace HafManFinish
         }
         public static string[] getEncod(BinaryTree tree)
         {
-            encodingArray = new String[255];
+            encodingArray = new String[143859];
+            Node c = tree.getRoot();
             fillEncodingArray(tree.getRoot(), "", "");
             return encodingArray;
         }
+            
+       
     }
 }

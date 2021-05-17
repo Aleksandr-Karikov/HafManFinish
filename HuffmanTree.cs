@@ -10,13 +10,13 @@ namespace HafManFinish
     {
         BinaryTree haftree;
         string input;
-        int[] ArrayFrequence;
-        byte CodeSize = 255;
+        byte[] ArrayFrequence;
+        int CodeSize = 143859;
         public String[] encodingArray;
         public HuffmanTree(string inp)
         {
             input = inp;
-            ArrayFrequence = new int[CodeSize];
+            ArrayFrequence = new byte[CodeSize];
             fillArrayFrequence(inp);
             haftree = getHuffmanTree();
             encodingArray = new String[CodeSize];
@@ -26,10 +26,12 @@ namespace HafManFinish
         {
             for (int i = 0; i < message.Length; i++)
             {
-                ArrayFrequence[(int)message[i]]++;
+             //   Console.WriteLine((int)message[i]);
+                    ArrayFrequence[(int)message[i]]++;
+
             }
         }
-        public int[] getFrequenceArray()
+            public byte[] getFrequenceArray()
         {
             return ArrayFrequence;
         }
@@ -78,6 +80,10 @@ namespace HafManFinish
         {
             if (node.isLeaf())
             {
+                if (codeBefore=="" && direction=="")
+                {
+                    encodingArray[(int)node.getLetter()] = "1";
+                }else
                 encodingArray[(int)node.getLetter()] = codeBefore + direction;
             }
             else
@@ -91,20 +97,20 @@ namespace HafManFinish
             return input;
         }
 
-        public void displayEncodingArray()
-        {//для отладки
-            fillEncodingArray(haftree.getRoot(), "", "");
+        //public void displayEncodingArray()
+        //{//для отладки
+        //    fillEncodingArray(haftree.getRoot(), "", "");
 
-            Console.WriteLine("======================Encoding table====================");
-            for (int i = 0; i < 255; i++)
-            {
-                if (ArrayFrequence[i] != 0)
-                {
-                    Console.WriteLine((char)i + " ");
-                    Console.WriteLine(encodingArray[i]);
-                }
-            }
-            Console.WriteLine("========================================================");
-        }
+        //    Console.WriteLine("======================Encoding table====================");
+        //    for (int i = 0; i < 140000; i++)
+        //    {
+        //        if (ArrayFrequence[i] != 0)
+        //        {
+        //            Console.WriteLine((char)i + " ");
+        //            Console.WriteLine(encodingArray[i]);
+        //        }
+        //    }
+        //    Console.WriteLine("========================================================");
+        //}
     }
 }
