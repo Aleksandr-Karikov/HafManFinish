@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,77 +25,75 @@ namespace HafManFinish
             }
             return output;
         }
-        static public BinaryTree getHuftree(string shortHaf)
+
+        private static Node getHuftree(Node head, StreamReader streamRead)
         {
-            BinaryTree temp = new BinaryTree();
-            if (shortHaf[0] == '0')
+            Node newLeftBranch = new Node();
+            Node newRightBranch = new Node();
+            if ((Convert.ToChar(streamRead.Read())) == '0')
             {
-                temp = new BinaryTree();
-            } else
-            {
-                if (shortHaf[0] == '1')
-                {
-                    temp = new BinaryTree(new Node(shortHaf[1]));
-                    return temp;
-                }
-            }
-            int i = 1;
-            Node Temp = temp.getRoot();
-            while (i < shortHaf.Length)
-            {
-                while (shortHaf[i] == '0')
-                {
-                    if (Temp.getLeftChild() != null && Temp.getRightChild() != null)
-                    {
-                        Temp = Temp.getParent();
-                    }
-                    else
-                    {
-                        if (Temp.getLeftChild() == null)
-                        {
-                            Temp.addChildWithouFreq(new Node(Temp));
-                            Temp = Temp.getLeftChild();
-                            i++;
-                        }
-                        else
-                        {
-                            Temp.addChildWithouFreq(new Node(Temp));
-                            Temp = Temp.getRightChild();
-                            i++;
-                        }
-                    }
-                }
-                while (Temp.getLeftChild() != null && Temp.getRightChild() != null)
-                {
-                    Temp = Temp.getParent();
-                }
-                i++;
-                Temp.addChildWithouFreq(new Node(shortHaf[i], Temp));
-                i++;
-            }
-            return temp;
-        }
-        static private String[] encodingArray;
-        static void fillEncodingArray(Node node, String codeBefore, String direction)
-        {
-            if (node.isLeaf())
-            {
-                encodingArray[(int)node.getLetter()] = codeBefore + direction;
+                head.SetLeftChild(newLeftBranch);
+                getHuftree(head.getLeftChild(), streamRead);
+                head.SetRightChild(newRightBranch);
+                getHuftree(head.getRightChild(), streamRead);
             }
             else
             {
-                fillEncodingArray(node.getLeftChild(), codeBefore + direction, "0");
-                fillEncodingArray(node.getRightChild(), codeBefore + direction, "1");
+                head.SetLetter(Convert.ToChar(streamRead.Read()));
+            }
+            return head;
+        }
+        public static BinaryTree getTree(StreamReader reader)
+        {
+            BinaryTree tree = new BinaryTree();
+            tree.setRoot(getHuftree(tree.getRoot(), reader));
+            return tree;
+
+        }
+        static private Dictionary<string, char> decode = new Dictionary<string, char>();
+        static void fillDencoding(Node node, string code)
+        {
+            if (node.isLeaf())
+            {
+                if (code == "")
+                {
+                    decode.Add("1", node.getLetter());
+                }
+                else { decode.Add(code, node.getLetter()); }
+
+            }
+            else
+            {
+                fillDencoding(node.getLeftChild(), code + "0");
+                fillDencoding(node.getRightChild(), code + "1");
             }
         }
-        public static string[] getEncod(BinaryTree tree)
+        public static Dictionary<string, char> getDecod(BinaryTree tree)
         {
-            encodingArray = new String[143859];
-            Node c = tree.getRoot();
-            fillEncodingArray(tree.getRoot(), "", "");
-            return encodingArray;
+            //Dictionary<string, char> dencoding = new Dictionary<string, char>();
+            //Node c = tree.getRoot();
+            fillDencoding(tree.getRoot(), "");
+            //Console.WriteLine("======================Encoding table====================");
+            //foreach (KeyValuePair<string, char> keyValue in decode)
+            //{
+            //    // keyValue.Value представляет класс Person
+            //    Console.WriteLine(keyValue.Key + " - " + keyValue.Value);
+            //}
+            //Console.WriteLine("========================================================");
+            return decode;
         }
-            
-       
+
+        //static public void displayDencodingArray()
+        //{//для отладки
+        // // fillEncodingArray(haftree.getRoot(), "");
+
+        //    Console.WriteLine("======================Encoding table====================");
+        //    foreach (KeyValuePair<string, char> keyValue in decode)
+        //    {
+        //        // keyValue.Value представляет класс Person
+        //        Console.WriteLine(keyValue.Key + " - " + keyValue.Value);
+        //    }
+        //    Console.WriteLine("========================================================");
+        //}
     }
 }

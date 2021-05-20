@@ -15,10 +15,10 @@ namespace HafManFinish
             root = new Node();
         }
 
-        public BinaryTree(char letter)
-        {
-            root = new Node(letter);
-        }
+        //public BinaryTree(char letter)
+        //{
+        //    root = new Node(letter);
+        //}
         public BinaryTree(Node root)
         {
             this.root = root;
@@ -27,7 +27,10 @@ namespace HafManFinish
         {
             return root.getFrequence();
         }
-
+        public void setRoot(Node Root)
+        {
+            root = Root;
+        }
         public Node getRoot()
         {
             return root;

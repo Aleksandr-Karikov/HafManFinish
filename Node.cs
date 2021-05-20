@@ -12,18 +12,14 @@ namespace HafManFinish
         private char letter;//буква
         private Node leftChild;//левый потомок
         private Node rightChild;//правый потомок
-        private Node parent=null;
         public Node(char letter, int frequence)
         { //собственно, конструктор
             this.letter = letter;
             this.frequence = frequence;
         }
         public Node() { }
-        public Node(Node parent) { this.parent = parent; }
         public Node(char letter) { this.letter = letter; }
-        public Node(char letter,Node parent) { this.letter = letter;
-            this.parent = parent;
-        }
+
         public void addChild(Node newNode)
         {//добавить потомка
             if (leftChild == null)//если левый пустой=> правый тоже=> добавляем в левый
@@ -57,15 +53,23 @@ namespace HafManFinish
         {
             return leftChild;
         }
-
+        public void SetLeftChild(Node child)
+        {
+            leftChild = child;
+        }
+        public void SetRightChild(Node child)
+        {
+            rightChild = child;
+        }
+        public void SetLetter(char ch)
+        {
+            letter = ch;
+        }
         public Node getRightChild()
         {
             return rightChild;
         }
-        public Node getParent()
-        {
-            return parent;
-        }
+
         public int getFrequence()
         {
             return frequence;

@@ -10,44 +10,47 @@ namespace HafManFinish
     {
         BinaryTree haftree;
         string input;
-        byte[] ArrayFrequence;
-        int CodeSize = 143859;
-        public String[] encodingArray;
+        private Dictionary<char, string> encode = new Dictionary<char, string>();
+        private Dictionary<char, int> ArrayFrequence = new Dictionary<char, int>();
+        //private Dictionary<char, string> decode = new Dictionary<char, string>();
         public HuffmanTree(string inp)
         {
             input = inp;
-            ArrayFrequence = new byte[CodeSize];
+          //  ArrayFrequence = new int[140000];
             fillArrayFrequence(inp);
             haftree = getHuffmanTree();
-            encodingArray = new String[CodeSize];
-            fillEncodingArray(haftree.getRoot(), "", "");
+            fillEncoding(haftree.getRoot(), "");
+        }
+        public Dictionary<char, string> GetEncoding()
+        {
+            return encode;
         }
         void fillArrayFrequence(string message)
         {
             for (int i = 0; i < message.Length; i++)
             {
-             //   Console.WriteLine((int)message[i]);
-                    ArrayFrequence[(int)message[i]]++;
+                if (!ArrayFrequence.Keys.Contains(message[i]))
+                {
+                    ArrayFrequence.Add(message[i], 1);
+                }else
+                 ArrayFrequence[message[i]]++;
 
             }
         }
-            public byte[] getFrequenceArray()
+        public Dictionary<char, int> getFrequenceArray()
         {
             return ArrayFrequence;
         }
         private BinaryTree getHuffmanTree()
         {
             PriorityQueue pq = new PriorityQueue();
-            for (int i = 0; i < CodeSize; i++)
+            foreach (KeyValuePair<char, int> keyValue in ArrayFrequence)
             {
-                if (ArrayFrequence[i] != 0)
-                {
-                    Node newNode = new Node((char)i, ArrayFrequence[i]);//то создать для него Node
-                    BinaryTree newTree = new BinaryTree(newNode);//а для Node создать BinaryTree
-                    pq.insert(newTree);//вставить в очередь
-                }
+                Node newNode = new Node(keyValue.Key, keyValue.Value);
+                BinaryTree newTree = new BinaryTree(newNode);
+                pq.insert(newTree);
             }
-
+           
             while (true)
             {
                 BinaryTree tree1 = pq.remove();//извлечь из очереди первое дерево.
@@ -72,26 +75,29 @@ namespace HafManFinish
         {
             return haftree;
         }
-        public String[] getEncodingArray()
+        public Dictionary<char, string> getEncoding()
         {
-            return encodingArray;
+            return encode;
         }
-        void fillEncodingArray(Node node, String codeBefore, String direction)
+
+        void fillEncoding(Node node,string code)
         {
-            if (node.isLeaf())
+            if(node.isLeaf())
             {
-                if (codeBefore=="" && direction=="")
+                if (code == "" )
                 {
-                    encodingArray[(int)node.getLetter()] = "1";
-                }else
-                encodingArray[(int)node.getLetter()] = codeBefore + direction;
+                    encode.Add(node.getLetter(), "1");
+                }
+                else { encode.Add(node.getLetter(), code); }
+
             }
             else
             {
-                fillEncodingArray(node.getLeftChild(), codeBefore + direction, "0");
-                fillEncodingArray(node.getRightChild(), codeBefore + direction, "1");
+                fillEncoding(node.getLeftChild(), code+"0");
+                fillEncoding(node.getRightChild(), code + "1");
             }
         }
+
         public String getOriginalString()
         {
             return input;
@@ -99,16 +105,13 @@ namespace HafManFinish
 
         //public void displayEncodingArray()
         //{//для отладки
-        //    fillEncodingArray(haftree.getRoot(), "", "");
+        //   // fillEncodingArray(haftree.getRoot(), "");
 
         //    Console.WriteLine("======================Encoding table====================");
-        //    for (int i = 0; i < 140000; i++)
+        //    foreach (KeyValuePair<char, string> keyValue in encode)
         //    {
-        //        if (ArrayFrequence[i] != 0)
-        //        {
-        //            Console.WriteLine((char)i + " ");
-        //            Console.WriteLine(encodingArray[i]);
-        //        }
+        //        // keyValue.Value представляет класс Person
+        //        Console.WriteLine(keyValue.Key + " - " + keyValue.Value);
         //    }
         //    Console.WriteLine("========================================================");
         //}
