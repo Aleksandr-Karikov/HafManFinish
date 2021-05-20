@@ -11,15 +11,15 @@ namespace HafManFinish
     {
         private HuffmanTree tree;
         private Dictionary<char, string> encoding = new Dictionary<char, string>();
-       // private Dictionary<char, int> ArrayFrequence = new Dictionary<char, int>();
-        public HuffmanOperator(string mes)
+        public HuffmanOperator(StreamReader read)
         {
-            tree = new HuffmanTree(mes);
+            tree = new HuffmanTree(read);
             encoding = tree.GetEncoding();
-      //      ArrayFrequence = tree.getFrequenceArray();
         }
-
-        public void Encode(string path1, string path2)
+        public HuffmanOperator()
+        {
+        }
+            public void Encode(string path1, string path2)
         {
             int lenghtCode = 0;
             int zero;

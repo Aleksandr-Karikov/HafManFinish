@@ -11,19 +11,19 @@ namespace HafManFinish
             string path = @"C:\Users\Александр\source\repos\HafManFinish\test.txt";
             string path2 = @"C:\Users\Александр\source\repos\HafManFinish\test2.txt";
             string path3 = @"C:\Users\Александр\source\repos\HafManFinish\test3.txt";
-            string Start = "";
+            HuffmanOperator huffmanOperator=new HuffmanOperator();
             try
             {
                 using (StreamReader sr = new StreamReader(path3))
                 {
-                    Start = sr.ReadToEnd();
+                    huffmanOperator = new HuffmanOperator(sr);
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            HuffmanOperator huffmanOperator = new HuffmanOperator(Start);
+            
 
             try
             {

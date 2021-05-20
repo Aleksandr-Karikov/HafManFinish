@@ -2,22 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace HafManFinish
 {
     class HuffmanTree
     {
         BinaryTree haftree;
-        string input;
         private Dictionary<char, string> encode = new Dictionary<char, string>();
         private Dictionary<char, int> ArrayFrequence = new Dictionary<char, int>();
-        //private Dictionary<char, string> decode = new Dictionary<char, string>();
-        public HuffmanTree(string inp)
+        public HuffmanTree(StreamReader read)
         {
-            input = inp;
-          //  ArrayFrequence = new int[140000];
-            fillArrayFrequence(inp);
+            fillArrayFrequence(read);
             haftree = getHuffmanTree();
             fillEncoding(haftree.getRoot(), "");
         }
@@ -25,16 +21,19 @@ namespace HafManFinish
         {
             return encode;
         }
-        void fillArrayFrequence(string message)
+        void fillArrayFrequence(StreamReader reader)
         {
-            for (int i = 0; i < message.Length; i++)
+            char c;
+            while (reader.Peek() >= 0)
             {
-                if (!ArrayFrequence.Keys.Contains(message[i]))
+                c = Convert.ToChar(reader.Read());
+                if (!ArrayFrequence.Keys.Contains(c))
                 {
-                    ArrayFrequence.Add(message[i], 1);
-                }else
-                 ArrayFrequence[message[i]]++;
-
+                    ArrayFrequence.Add(c, 1);
+                } else
+                {
+                    ArrayFrequence[c]++;
+                }
             }
         }
         public Dictionary<char, int> getFrequenceArray()
@@ -98,10 +97,7 @@ namespace HafManFinish
             }
         }
 
-        public String getOriginalString()
-        {
-            return input;
-        }
+
 
         //public void displayEncodingArray()
         //{//для отладки
